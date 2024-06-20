@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --inter-font: "Inter", sans-serif;
+  --montserrat-font: "Montserrat", sans-serif;
+  --background-color: #1c1c1c;
+  --foreground-color: #262626;
+  --foreground-light-color: #303030;
+  --text-background-color: #fff;
+  --text-muted-color: #6f6f6f;
+  --text-light-color: #9e9e9e;
+  --primary-color: #10ac84;
+  --primary-light-color: #15bf95;
+  --primary-dark-color: #0c9372;
+  --border-color: #4e4e4e;
+  --accent-color: #fbbc04;
+  --accent-color-dark: #41331c;
+
+  --navbar-height: 60px;
+  --search-input-width: 800px;
+  --sidebar-width: 300px;
+}
+
+@layer base {
+  body {
+    @apply bg-background font-montserrat text-text-background;
+  }
+}
+
+.modalAnimation {
+  animation: modalAnimation 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalAnimation {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
