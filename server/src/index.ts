@@ -1,9 +1,10 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
 import config from "./config";
 import routes from "./routes";
+import { errorHandler } from "./middlewares";
 
 const app = express();
 
@@ -13,14 +14,16 @@ app.use(cookieParser());
 app.use(cors({ credentials: true, origin: config.CLIENT_URL }));
 app.use(express.static("public"));
 
-// Error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+// Test error handler
+app.post("/test-error", (req, res) => {
+  throw new Error("Test error");
 });
 
 // Routes
 app.use("/api", routes);
+
+// Error handler
+app.use(errorHandler);
 
 app.listen(config.PORT, () => {
   console.log(`Server started on port ${config.PORT}`);
