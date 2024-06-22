@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { HTTP_STATUS } from "../constants";
-import sendResponse from "../utils/response";
 import { ZodError } from "zod";
+import { ValidationException } from "../exceptions";
+import { ValidationErrorDetail } from "../exceptions/CustomError";
 
 export const validation = (
   schema: any
@@ -12,22 +12,17 @@ export const validation = (
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const validationErrors = error.errors.map((issue) => {
-          return {
-            field: issue.path.join("."),
-            message: issue.message,
-          };
-        });
-
-        sendResponse(
-          res,
-          HTTP_STATUS.BAD_REQUEST,
-          "Validation errors",
-          validationErrors
+        const validationErrors: ValidationErrorDetail[] = error.errors.map(
+          (issue) => {
+            return {
+              field: issue.path.join("."),
+              message: issue.message,
+            };
+          }
         );
-      }
 
-      return next(error);
+        next(new ValidationException("Validation error", validationErrors));
+      }
     }
   };
 };

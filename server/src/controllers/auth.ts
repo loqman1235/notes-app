@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { getUserByEmail, createUser } from "../services/user";
 import sendResponse from "../utils/response";
 import { HTTP_STATUS } from "../constants";
-import { BadRequestError, CustomError, NotFoundError } from "../utils/errors";
+import { BadRequestException } from "../exceptions";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password } = req.body;
@@ -11,7 +11,7 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      throw new BadRequestError("User already exists");
+      throw new BadRequestException("User already exists");
     }
 
     const user = await createUser({ username, email, password });
