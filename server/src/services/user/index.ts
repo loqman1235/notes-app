@@ -46,4 +46,4 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
   return user;
 };
 
-export { createUser, getUserByEmail };
+export { createUser, getUserByEmail, comparePassword };
