@@ -1,8 +1,9 @@
 import { Response } from "express";
+import { HTTP_STATUS } from "../constants";
 
 const sendResponse = (
   res: Response,
-  status: number,
+  status: (typeof HTTP_STATUS)[keyof typeof HTTP_STATUS],
   message: string,
   data: any = null
 ) => {

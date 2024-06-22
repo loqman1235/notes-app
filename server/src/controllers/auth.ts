@@ -16,7 +16,11 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
     const user = await createUser({ username, email, password });
 
-    sendResponse(res, HTTP_STATUS.CREATED, "User created successfully", user);
+    const { password: _, ...rest } = user;
+
+    sendResponse(res, HTTP_STATUS.CREATED, "User created successfully", {
+      user: rest,
+    });
   } catch (error) {
     next(error);
   }

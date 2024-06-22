@@ -21,7 +21,7 @@ export const validation = (
           }
         );
 
-        next(new ValidationException("Validation error", validationErrors));
+        next(new ValidationException("Validation errors", validationErrors));
       }
     }
   };
