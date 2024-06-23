@@ -62,4 +62,18 @@ const storeRefreshToken = async (userId: string, refreshToken: string) => {
   });
 };
 
-export { createUser, getUserByEmail, comparePassword, storeRefreshToken };
+const removeRefreshToken = async (userId: string) => {
+  await prisma.refreshToken.delete({
+    where: {
+      userId,
+    },
+  });
+};
+
+export {
+  createUser,
+  getUserByEmail,
+  comparePassword,
+  storeRefreshToken,
+  removeRefreshToken,
+};
