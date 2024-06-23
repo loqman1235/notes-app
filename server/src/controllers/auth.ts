@@ -77,14 +77,14 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// const logout = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     res.clearCookie(config.REFRESH_TOKEN_COOKIE_NAME);
-//     res.sendStatus(HTTP_STATUS.OK);
-//     await removeRefreshToken(req.userId);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.clearCookie(config.REFRESH_TOKEN_COOKIE_NAME);
+    res.sendStatus(HTTP_STATUS.OK);
+    await removeRefreshToken(req.userId);
+  } catch (error) {
+    next(error);
+  }
+};
 
-export { register, login };
+export { register, login, logout };
