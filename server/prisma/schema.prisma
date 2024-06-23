@@ -11,20 +11,21 @@ datasource db {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  username       String
-  email          String         @unique
-  password       String
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  notes          Note[]
-  refresh_tokens RefreshToken[]
+  id            String        @id @default(cuid())
+  username      String
+  email         String        @unique
+  password      String
+  refresh_token RefreshToken?
+  notes         Note[]
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
 }
 
 model RefreshToken {
   id         String   @id @default(cuid())
   token      String
-  user       User     @relation(fields: [id], references: [id])
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

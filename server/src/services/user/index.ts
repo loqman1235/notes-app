@@ -1,6 +1,7 @@
 import prisma from "../../utils/prisma";
 import bcrypt from "bcrypt";
 import { User } from "@prisma/client";
+import { createRefreshToken } from "../../utils/jwt";
 
 interface CreateUserParams {
   username: string;
@@ -46,4 +47,19 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
   return user;
 };
 
-export { createUser, getUserByEmail, comparePassword };
+const storeRefreshToken = async (userId: string, refreshToken: string) => {
+  await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      refresh_token: {
+        create: {
+          token: refreshToken,
+        },
+      },
+    },
+  });
+};
+
+export { createUser, getUserByEmail, comparePassword, storeRefreshToken };

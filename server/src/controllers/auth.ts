@@ -1,8 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import { getUserByEmail, createUser } from "../services/user";
-import sendResponse from "../utils/response";
+import {
+  getUserByEmail,
+  createUser,
+  comparePassword,
+  storeRefreshToken,
+} from "../services/user";
 import { HTTP_STATUS } from "../constants";
-import { BadRequestException } from "../exceptions";
+import { AuthException, BadRequestException } from "../exceptions";
+import config from "../config";
+
+// Utils
+import sendResponse from "../utils/response";
+import { createAccessToken, createRefreshToken } from "../utils/jwt";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password } = req.body;
@@ -27,8 +36,44 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
-  // TODO
-  sendResponse(res, HTTP_STATUS.OK, "User logged in successfully");
+  const { email, password } = req.body;
+
+  try {
+    //  Check if user exist
+    const existingUser = await getUserByEmail(email);
+
+    if (!existingUser) {
+      throw new AuthException("Wrong credentials");
+    }
+
+    // Check password
+    const isMatch = await comparePassword(password, existingUser.password);
+    if (!isMatch) {
+      throw new AuthException("Wrong credentials");
+    }
+
+    // Create access token
+    const accessToken = createAccessToken({ userId: existingUser.id });
+
+    const userWithToken = { ...existingUser, accessToken };
+
+    // Set refresh token
+    const refreshToken = createRefreshToken({ userId: existingUser.id });
+
+    res.cookie(
+      config.REFRESH_TOKEN_COOKIE_NAME,
+      refreshToken,
+      config.REFRESH_TOKEN_COOKIE_OPTIONS
+    );
+
+    await storeRefreshToken(existingUser.id, refreshToken);
+
+    sendResponse(res, HTTP_STATUS.OK, "Login successful", {
+      user: userWithToken,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export { register, login };

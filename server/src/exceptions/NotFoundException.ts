@@ -11,8 +11,8 @@ class NotFoundException extends CustomError {
 
   serialize(): { message: string; code: ErrorCode } {
     return {
-      message: this.message,
       code: this.code,
+      message: this.message,
     };
   }
 }

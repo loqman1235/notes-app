@@ -24,18 +24,17 @@ export interface ValidationErrorDetail {
 
 abstract class CustomError extends Error {
   abstract statusCode: StatusCode;
-  field?: string;
-  details?: ValidationErrorDetail[];
+  abstract code: ErrorCode;
+  valiadtionErrors?: ValidationErrorDetail[];
 
-  constructor(message: string, details?: ValidationErrorDetail[]) {
+  constructor(message: string) {
     super(message);
     Object.setPrototypeOf(this, CustomError.prototype);
-    this.details = details || [];
   }
 
   abstract serialize(): {
-    message: string;
     code: string;
+    message: string;
     details?: ValidationErrorDetail[];
   };
 }
