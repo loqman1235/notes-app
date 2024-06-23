@@ -19,7 +19,7 @@ export type ErrorCode =
 
 export interface ValidationErrorDetail {
   field: string;
-  message: string;
+  error: string;
 }
 
 abstract class CustomError extends Error {

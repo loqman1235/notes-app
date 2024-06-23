@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
-import { ValidationException } from "../exceptions";
+import { BadRequestException } from "../exceptions";
 import { ValidationErrorDetail } from "../exceptions/CustomError";
 
 export const validation = (
@@ -16,13 +16,15 @@ export const validation = (
           (issue) => {
             return {
               field: issue.path.join("."),
-              message: issue.message,
+              error: issue.message,
             };
           }
         );
 
-        next(new ValidationException("Validation errors", validationErrors));
+        next(new BadRequestException("Validation failed", validationErrors));
       }
+
+      next(error);
     }
   };
 };

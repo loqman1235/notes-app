@@ -1,19 +1,22 @@
-import CustomError, { ErrorCode } from "./CustomError";
+import CustomError, { ErrorCode, ValidationErrorDetail } from "./CustomError";
 import { HTTP_STATUS } from "../constants";
 
 class BadRequestException extends CustomError {
   statusCode = HTTP_STATUS.BAD_REQUEST;
   code: ErrorCode = "BAD_REQUEST";
+  valiadtionErrors?: ValidationErrorDetail[];
 
-  constructor(message: string) {
+  constructor(message: string, validationErrors?: ValidationErrorDetail[]) {
     super(message);
     Object.setPrototypeOf(this, BadRequestException.prototype);
+    this.valiadtionErrors = validationErrors;
   }
 
   serialize(): { message: string; code: ErrorCode } {
     return {
-      message: this.message,
       code: this.code,
+      message: this.message,
+      ...(this.valiadtionErrors ? { details: this.valiadtionErrors } : {}),
     };
   }
 }
