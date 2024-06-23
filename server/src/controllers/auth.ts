@@ -78,10 +78,16 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const logout = async (req: Request, res: Response, next: NextFunction) => {
+  const { userId } = req;
+
   try {
+    if (!userId) {
+      throw new BadRequestException("User not found");
+    }
+
+    await removeRefreshToken(userId);
     res.clearCookie(config.REFRESH_TOKEN_COOKIE_NAME);
-    res.sendStatus(HTTP_STATUS.OK);
-    await removeRefreshToken(req.userId);
+    sendResponse(res, HTTP_STATUS.OK, "Logout successful");
   } catch (error) {
     next(error);
   }

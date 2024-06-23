@@ -3,7 +3,7 @@ import express from "express";
 import { login, logout, register } from "../controllers/auth";
 
 // Middlewares
-import { validation } from "../middlewares";
+import { authenticate, validation } from "../middlewares";
 import { loginSchema, registerSchema } from "../validators/auth";
 
 const router = express.Router();
@@ -11,6 +11,6 @@ const router = express.Router();
 // Register
 router.post("/register", validation(registerSchema), register);
 router.post("/login", validation(loginSchema), login);
-router.post("/logout", logout);
+router.post("/logout", authenticate, logout);
 
 export default router;
