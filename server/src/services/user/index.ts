@@ -48,18 +48,33 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
 };
 
 const storeRefreshToken = async (userId: string, refreshToken: string) => {
-  await prisma.user.update({
+  // Check if the user already has a refresh token
+  const existingToken = await prisma.refreshToken.findUnique({
     where: {
-      id: userId,
-    },
-    data: {
-      refresh_token: {
-        create: {
-          token: refreshToken,
-        },
-      },
+      userId,
     },
   });
+
+  if (existingToken) {
+    // Update the existing refresh token
+    await prisma.refreshToken.update({
+      where: {
+        userId,
+      },
+      data: {
+        token: refreshToken,
+        updated_at: new Date(),
+      },
+    });
+  } else {
+    // Create a new refresh token
+    await prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: userId,
+      },
+    });
+  }
 };
 
 const removeRefreshToken = async (userId: string) => {
@@ -70,10 +85,30 @@ const removeRefreshToken = async (userId: string) => {
   });
 };
 
+const getRefreshToken = async (userId: string, token: string) => {
+  const refreshToken = await prisma.user.findUnique({
+    where: {
+      id: userId,
+      refresh_token: {
+        token,
+      },
+    },
+    select: {
+      id: true,
+      username: true,
+      email: true,
+      created_at: true,
+      updated_at: true,
+    },
+  });
+  return refreshToken;
+};
+
 export {
   createUser,
   getUserByEmail,
   comparePassword,
   storeRefreshToken,
   removeRefreshToken,
+  getRefreshToken,
 };

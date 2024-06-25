@@ -1,6 +1,6 @@
 import express from "express";
 // Controllers
-import { login, logout, register } from "../controllers/auth";
+import { login, logout, refresh, register } from "../controllers/auth";
 
 // Middlewares
 import { authenticate, validation } from "../middlewares";
@@ -12,5 +12,6 @@ const router = express.Router();
 router.post("/register", validation(registerSchema), register);
 router.post("/login", validation(loginSchema), login);
 router.post("/logout", authenticate, logout);
+router.post("/refresh", authenticate, refresh);
 
 export default router;

@@ -3,8 +3,9 @@ import {
   getUserByEmail,
   createUser,
   comparePassword,
-  storeRefreshToken,
   removeRefreshToken,
+  storeRefreshToken,
+  getRefreshToken,
 } from "../services/user";
 import { HTTP_STATUS } from "../constants";
 import { AuthException, BadRequestException } from "../exceptions";
@@ -12,7 +13,13 @@ import config from "../config";
 
 // Utils
 import sendResponse from "../utils/response";
-import { createAccessToken, createRefreshToken } from "../utils/jwt";
+import {
+  createAccessToken,
+  createRefreshToken,
+  verifyToken,
+} from "../utils/jwt";
+import { CustomRequest } from "../types/express";
+import { TokenExpiredError } from "jsonwebtoken";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password } = req.body;
@@ -56,8 +63,10 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     // Create access token
     const accessToken = createAccessToken({ userId: existingUser.id });
 
-    const userWithToken = { ...existingUser, accessToken };
+    // remove password from response
+    const { password: _, ...rest } = existingUser;
 
+    const userWithToken = { ...rest, accessToken };
     // Set refresh token
     const refreshToken = createRefreshToken({ userId: existingUser.id });
 
@@ -77,7 +86,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const logout = async (req: Request, res: Response, next: NextFunction) => {
+const logout = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const { userId } = req;
 
   try {
@@ -93,4 +106,38 @@ const logout = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { register, login, logout };
+const refresh = async (req: Request, res: Response, next: NextFunction) => {
+  const { refreshToken } = req.cookies;
+
+  try {
+    if (!refreshToken) {
+      throw new AuthException("Refresh token is missing");
+    }
+
+    const payload = verifyToken(refreshToken, config.REFRESH_TOKEN_SECRET);
+
+    if (!payload) {
+      throw new AuthException("Invalid refresh token");
+    }
+
+    const user = await getRefreshToken(payload.userId, refreshToken);
+
+    if (!user) {
+      throw new AuthException("Invalid refresh token");
+    }
+
+    const accessToken = createAccessToken({ userId: user.id });
+    const userWithToken = { ...user, accessToken };
+    sendResponse(res, HTTP_STATUS.OK, "Refresh successful", {
+      user: userWithToken,
+    });
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      next(new AuthException("Access token expired"));
+    }
+
+    next(error);
+  }
+};
+
+export { register, login, logout, refresh };

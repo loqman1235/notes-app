@@ -2,7 +2,7 @@ import { HTTP_STATUS } from "../constants";
 import CustomError, { ErrorCode, ValidationErrorDetail } from "./CustomError";
 
 class AuthException extends CustomError {
-  statusCode = HTTP_STATUS.BAD_REQUEST;
+  statusCode = HTTP_STATUS.UNAUTHORIZED;
   code: ErrorCode = "UNAUTHORIZED";
 
   constructor(message: string) {
