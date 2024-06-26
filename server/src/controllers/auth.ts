@@ -133,7 +133,7 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
     });
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      next(new AuthException("Access token expired"));
+      next(new AuthException("Refresh token expired"));
     }
 
     next(error);
