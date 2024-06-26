@@ -32,6 +32,12 @@
   }
 }
 
+@layer utilities {
+  .input {
+    @apply rounded-xl border border-border bg-foreground px-4 py-3 shadow-sm outline-none;
+  }
+}
+
 .modalAnimation {
   animation: modalAnimation 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
