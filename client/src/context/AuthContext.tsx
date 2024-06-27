@@ -1,12 +1,12 @@
 import { createContext, useState } from "react";
 import { register as registerService } from "@/services/authService";
-import { RegisterSchemaType } from "@/validators/auth";
+import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   isAuth: boolean;
   registerUser: (data: RegisterSchemaType, reset: () => void) => Promise<void>;
-  loginUser: () => Promise<void>;
+  loginUser: (data: LoginSchemaType) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -35,7 +35,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Login user
-  const loginUser = async () => {};
+  const loginUser = async (data: LoginSchemaType) => {
+    console.log(data);
+  };
 
   return (
     <AuthContext.Provider value={{ isAuth, registerUser, loginUser }}>
