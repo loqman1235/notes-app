@@ -1,33 +1,44 @@
-import api from "@/services/api";
-import { RegisterSchemaType } from "@/validators/auth";
 import { createContext, useState } from "react";
+import { register as registerService } from "@/services/authService";
+import { RegisterSchemaType } from "@/validators/auth";
+import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   isAuth: boolean;
-  registerUser?: (data: RegisterSchemaType) => Promise<void>;
+  registerUser: (data: RegisterSchemaType, reset: () => void) => Promise<void>;
+  loginUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
-  isAuth: true,
+  isAuth: false,
   registerUser: async () => {},
+  loginUser: async () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isAuth, setIsAuth] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
+  const navigate = useNavigate();
 
-  // Register
-  const registerUser = async (data: RegisterSchemaType) => {
+  // Register user
+  const registerUser = async (data: RegisterSchemaType, reset: () => void) => {
     try {
-      const response = await api.post("/auth/register", data);
-      console.log(response);
+      const response = await registerService(data);
+
+      if (response.status === 201) {
+        reset();
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Login user
+  const loginUser = async () => {};
+
   return (
-    <AuthContext.Provider value={{ isAuth, registerUser }}>
+    <AuthContext.Provider value={{ isAuth, registerUser, loginUser }}>
       {children}
     </AuthContext.Provider>
   );

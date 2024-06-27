@@ -1,21 +1,25 @@
 import Button from "@/components/shared/Button";
 import ErrorMessage from "@/components/shared/ErrorMessage";
+import useAuth from "@/hooks/useAuth";
 import { RegisterSchema, RegisterSchemaType } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const RegisterPage = () => {
+  const { registerUser } = useAuth();
+
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
-    console.log(data);
+    await registerUser(data, reset);
   };
 
   return (
