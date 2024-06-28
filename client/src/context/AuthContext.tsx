@@ -2,6 +2,7 @@ import { createContext, useState } from "react";
 import { register as registerService } from "@/services/authService";
 import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type AuthContextType = {
   isAuth: boolean;
@@ -28,6 +29,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (response.status === 201) {
         reset();
+        toast.success(response.data.message);
         navigate("/login");
       }
     } catch (error) {

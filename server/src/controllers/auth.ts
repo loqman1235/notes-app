@@ -35,9 +35,14 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
 
     const { password: _, ...rest } = user;
 
-    sendResponse(res, HTTP_STATUS.CREATED, "User created successfully", {
-      user: rest,
-    });
+    sendResponse(
+      res,
+      HTTP_STATUS.CREATED,
+      "You have successfully registered. Now you can log in",
+      {
+        user: rest,
+      }
+    );
   } catch (error) {
     next(error);
   }
