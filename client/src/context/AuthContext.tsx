@@ -5,18 +5,19 @@ import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   isAuth: boolean;
+  setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
   registerUser: (data: RegisterSchemaType, reset: () => void) => Promise<void>;
   loginUser: (data: LoginSchemaType) => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
   isAuth: false,
+  setIsAuth: () => {},
   registerUser: async () => {},
   loginUser: async () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isAuth, setIsAuth] = useState(false);
   const navigate = useNavigate();
 
@@ -40,7 +41,9 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuth, registerUser, loginUser }}>
+    <AuthContext.Provider
+      value={{ isAuth, setIsAuth, registerUser, loginUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

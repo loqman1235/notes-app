@@ -1,4 +1,4 @@
-import { RegisterSchemaType } from "@/validators/auth";
+import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import api from "./api";
 
 const register = async (data: RegisterSchemaType) => {
@@ -6,4 +6,9 @@ const register = async (data: RegisterSchemaType) => {
   return response;
 };
 
-export { register };
+const login = async (data: LoginSchemaType) => {
+  const response = await api.post("/auth/login", data);
+  return response;
+};
+
+export { register, login };
