@@ -1,11 +1,14 @@
 import Button from "@/components/shared/Button";
 import ErrorMessage from "@/components/shared/ErrorMessage";
+import useAuth from "@/hooks/useAuth";
 import { LoginSchema, LoginSchemaType } from "@/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
+  const { loginUser } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -14,8 +17,8 @@ const LoginPage = () => {
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit = (data: LoginSchemaType) => {
-    console.log(data);
+  const onSubmit = async (data: LoginSchemaType) => {
+    await loginUser(data);
   };
 
   return (

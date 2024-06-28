@@ -1,8 +1,14 @@
 import { createContext, useState } from "react";
-import { register as registerService } from "@/services/authService";
+import {
+  login as loginService,
+  register as registerService,
+} from "@/services/authService";
 import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AxiosError } from "axios";
+import { setLocalStorage } from "@/utils/localStorage";
+// import { setLocalStorage, getLocalStorage } from "@/utils/localStorage";
 
 type AuthContextType = {
   isAuth: boolean;
@@ -39,7 +45,26 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Login user
   const loginUser = async (data: LoginSchemaType) => {
-    console.log(data);
+    try {
+      const response = await loginService(data);
+
+      console.log("STATUS: ", response.status);
+
+      if (response.status === 200) {
+        const user = response.data?.data?.user;
+        const accessToken = response.data?.data?.accessToken;
+
+        setIsAuth(true);
+        setLocalStorage("user", user);
+        setLocalStorage("accessToken", accessToken);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data.message);
+      }
+
+      console.log(error);
+    }
   };
 
   return (

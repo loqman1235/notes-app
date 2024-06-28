@@ -71,7 +71,6 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     // remove password from response
     const { password: _, ...rest } = existingUser;
 
-    const userWithToken = { ...rest, accessToken };
     // Set refresh token
     const refreshToken = createRefreshToken({ userId: existingUser.id });
 
@@ -84,7 +83,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     await storeRefreshToken(existingUser.id, refreshToken);
 
     sendResponse(res, HTTP_STATUS.OK, "Login successful", {
-      user: userWithToken,
+      user: rest,
+      accessToken,
     });
   } catch (error) {
     next(error);
