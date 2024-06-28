@@ -3,7 +3,7 @@ interface ErrorMessageProps {
 }
 
 const ErrorMessage = ({ children }: ErrorMessageProps) => {
-  return <p className="text-sm text-red-700">{children}</p>;
+  return <p className="text-sm text-red-500">{children}</p>;
 };
 
 export default ErrorMessage;
