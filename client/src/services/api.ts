@@ -1,3 +1,4 @@
+import { getLocalStorage } from "@/utils/localStorage";
 import axios from "axios";
 
 const api = axios.create({
@@ -5,13 +6,15 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// Add access token to all requests
-// api.interceptors.request.use((config) => {
-//   const token = localStorage.getItem("access_token");
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+api.interceptors.request.use((config) => {
+  // Set authorization header to Bearer token
+  const accessToken = getLocalStorage("accessToken");
+
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${JSON.parse(accessToken)}`;
+  }
+
+  return config;
+});
 
 export default api;
