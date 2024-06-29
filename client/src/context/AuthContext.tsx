@@ -3,6 +3,7 @@ import {
   login as loginService,
   register as registerService,
   verifyAccessToken as verifyAccessTokenService,
+  logout as logoutService,
 } from "@/services/authService";
 import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,7 @@ type AuthContextType = {
   setIsAuth: React.Dispatch<React.SetStateAction<boolean>>;
   registerUser: (data: RegisterSchemaType, reset: () => void) => Promise<void>;
   loginUser: (data: LoginSchemaType) => Promise<void>;
+  logoutUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType>({
@@ -27,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
   setIsAuth: () => {},
   registerUser: async () => {},
   loginUser: async () => {},
+  logoutUser: async () => {},
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -70,6 +73,21 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Logout user
+  const logoutUser = async () => {
+    try {
+      const response = await logoutService();
+
+      if (response.status === 200) {
+        setIsAuth(false);
+        removeLocalStorage("accessToken");
+        removeLocalStorage("user");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // Verify Access Token
   useEffect(() => {
     const verifyAccessToken = async () => {
@@ -81,15 +99,18 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
         }
 
         const response = await verifyAccessTokenService();
+
         if (response.status === 200) {
           setIsAuth(true);
-        } else {
-          removeLocalStorage("user");
-          removeLocalStorage("accessToken");
-          setIsAuth(false);
         }
       } catch (error) {
-        console.log(error);
+        if (error instanceof AxiosError) {
+          if (error.response?.data.code === "UNAUTHORIZED") {
+            removeLocalStorage("user");
+            removeLocalStorage("accessToken");
+            setIsAuth(false);
+          }
+        }
       }
     };
 
@@ -98,7 +119,7 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuth, setIsAuth, registerUser, loginUser }}
+      value={{ isAuth, setIsAuth, registerUser, loginUser, logoutUser }}
     >
       {children}
     </AuthContext.Provider>

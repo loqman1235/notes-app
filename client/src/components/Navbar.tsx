@@ -9,11 +9,13 @@ import ToolTip from "./shared/ToolTip";
 import Brand from "./shared/Brand";
 import useSidebar from "@/hooks/useSidebar";
 import { useEffect, useRef } from "react";
+import useAuth from "@/hooks/useAuth";
 
 const navbarBtnStyles =
   "flex items-center justify-center rounded-full p-2 text-2xl text-text-light transition duration-300 hover:bg-foreground-light hover:text-text-background";
 
 const Navbar = () => {
+  const { logoutUser } = useAuth();
   const { toggleSidebar } = useSidebar();
   const navbarRef = useRef<HTMLDivElement>(null);
 
@@ -80,7 +82,10 @@ const Navbar = () => {
             <ToolTip text="Grid View" position="center" />
           </div>
           <div className="group relative">
-            <button className={navbarBtnStyles}>
+            <button
+              className={navbarBtnStyles}
+              onClick={async () => await logoutUser()}
+            >
               <MdLogout />
             </button>
             <ToolTip text="Logout" position="right" />

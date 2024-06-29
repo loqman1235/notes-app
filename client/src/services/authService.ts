@@ -16,4 +16,9 @@ const verifyAccessToken = async () => {
   return response;
 };
 
-export { register, login, verifyAccessToken };
+const logout = async () => {
+  const response = await api.post("/auth/logout");
+  return response;
+};
+
+export { register, login, verifyAccessToken, logout };
