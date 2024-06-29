@@ -143,6 +143,10 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
       next(new AuthException("Refresh token expired"));
     }
 
+    if (error instanceof JsonWebTokenError) {
+      next(new AuthException("Invalid refresh token"));
+    }
+
     next(error);
   }
 };
