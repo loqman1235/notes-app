@@ -11,4 +11,9 @@ const login = async (data: LoginSchemaType) => {
   return response;
 };
 
-export { register, login };
+const verifyAccessToken = async () => {
+  const response = await api.get("/auth/verify-token");
+  return response;
+};
+
+export { register, login, verifyAccessToken };

@@ -1,13 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import {
   login as loginService,
   register as registerService,
+  verifyAccessToken as verifyAccessTokenService,
 } from "@/services/authService";
 import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
+import {
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage,
+} from "@/utils/localStorage";
 // import { setLocalStorage, getLocalStorage } from "@/utils/localStorage";
 
 type AuthContextType = {
@@ -64,6 +69,32 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(error);
     }
   };
+
+  // Verify Access Token
+  useEffect(() => {
+    const verifyAccessToken = async () => {
+      try {
+        const accessToken = getLocalStorage("accessToken");
+        if (!accessToken) {
+          setIsAuth(false);
+          return;
+        }
+
+        const response = await verifyAccessTokenService();
+        if (response.status === 200) {
+          setIsAuth(true);
+        } else {
+          removeLocalStorage("user");
+          removeLocalStorage("accessToken");
+          setIsAuth(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    verifyAccessToken();
+  }, []);
 
   return (
     <AuthContext.Provider

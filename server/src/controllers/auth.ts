@@ -145,4 +145,31 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { register, login, logout, refresh };
+// Verify access token
+const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
+  const accessToken = req.headers.authorization
+    ? req.headers.authorization.split(" ")[1]
+    : null;
+
+  if (!accessToken) {
+    throw new AuthException("Access token is missing");
+  }
+
+  try {
+    const payload = verifyToken(accessToken, config.ACCESS_TOKEN_SECRET);
+
+    if (!payload) {
+      throw new AuthException("Invalid access token");
+    }
+
+    sendResponse(res, HTTP_STATUS.OK, "Access token verified");
+  } catch (error) {
+    if (error instanceof TokenExpiredError) {
+      next(new AuthException("Access token expired"));
+    }
+
+    next(error);
+  }
+};
+
+export { register, login, logout, refresh, verifyAccessToken };
