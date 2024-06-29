@@ -19,7 +19,7 @@ import {
   verifyToken,
 } from "../utils/jwt";
 import { CustomRequest } from "../types/express";
-import { TokenExpiredError } from "jsonwebtoken";
+import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 
 const register = async (req: Request, res: Response, next: NextFunction) => {
   const { username, email, password } = req.body;
@@ -121,6 +121,8 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
 
     const payload = verifyToken(refreshToken, config.REFRESH_TOKEN_SECRET);
 
+    console.log(payload, "payload");
+
     if (!payload) {
       throw new AuthException("Invalid refresh token");
     }
@@ -166,6 +168,10 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
   } catch (error) {
     if (error instanceof TokenExpiredError) {
       next(new AuthException("Access token expired"));
+    }
+
+    if (error instanceof JsonWebTokenError) {
+      next(new AuthException("Invalid access token"));
     }
 
     next(error);
