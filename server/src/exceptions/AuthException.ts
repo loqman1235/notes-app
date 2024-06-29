@@ -5,8 +5,11 @@ class AuthException extends CustomError {
   statusCode = HTTP_STATUS.UNAUTHORIZED;
   code: ErrorCode = "UNAUTHORIZED";
 
-  constructor(message: string) {
+  constructor(message: string, code?: ErrorCode) {
     super(message);
+    if (code) {
+      this.code = code;
+    }
     Object.setPrototypeOf(this, AuthException.prototype);
   }
 

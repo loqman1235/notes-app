@@ -15,7 +15,8 @@ export type ErrorCode =
   | "TOKEN_EXPIRED"
   | "TOKEN_INVALID"
   | "TOKEN_NOT_PROVIDED"
-  | "WRONG_CREDENTIALS";
+  | "WRONG_CREDENTIALS"
+  | "TOKEN_MISSING";
 
 export interface ValidationErrorDetail {
   field: string;

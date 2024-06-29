@@ -134,9 +134,9 @@ const refresh = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const accessToken = createAccessToken({ userId: user.id });
-    const userWithToken = { ...user, accessToken };
     sendResponse(res, HTTP_STATUS.OK, "Refresh successful", {
-      user: userWithToken,
+      user,
+      accessToken,
     });
   } catch (error) {
     if (error instanceof TokenExpiredError) {
@@ -158,24 +158,24 @@ const verifyAccessToken = (req: Request, res: Response, next: NextFunction) => {
     : null;
 
   if (!accessToken) {
-    throw new AuthException("Access token is missing");
+    throw new AuthException("Access token is missing", "TOKEN_MISSING");
   }
 
   try {
     const payload = verifyToken(accessToken, config.ACCESS_TOKEN_SECRET);
 
     if (!payload) {
-      throw new AuthException("Invalid access token");
+      throw new AuthException("Invalid access token", "TOKEN_INVALID");
     }
 
     sendResponse(res, HTTP_STATUS.OK, "Access token verified");
   } catch (error) {
     if (error instanceof TokenExpiredError) {
-      next(new AuthException("Access token expired"));
+      next(new AuthException("Access token expired", "TOKEN_EXPIRED"));
     }
 
     if (error instanceof JsonWebTokenError) {
-      next(new AuthException("Invalid access token"));
+      next(new AuthException("Invalid access token", "TOKEN_INVALID"));
     }
 
     next(error);
