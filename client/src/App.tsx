@@ -5,6 +5,7 @@ import RemindersPage from "@/pages/RemindersPage";
 import useAuth from "./hooks/useAuth";
 import { LoginPage, RegisterPage } from "@/pages/Auth";
 import { lazy, Suspense } from "react";
+import LoadingScreen from "@/components/shared/LoadingScreen";
 
 const AppLayout = lazy(() => import("@/layouts/AppLayout"));
 
@@ -12,7 +13,7 @@ const App = () => {
   const { isAuth } = useAuth();
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route
           path="/"
