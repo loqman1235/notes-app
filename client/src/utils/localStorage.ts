@@ -3,7 +3,11 @@ const setLocalStorage = (key: string, value: string) => {
 };
 
 const getLocalStorage = (key: string) => {
-  return localStorage.getItem(key);
+  if (!localStorage.getItem(key)) {
+    return null;
+  }
+
+  return JSON.parse(localStorage.getItem(key) as string);
 };
 
 const removeLocalStorage = (key: string) => {

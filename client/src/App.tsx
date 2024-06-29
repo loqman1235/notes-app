@@ -22,8 +22,14 @@ const App = () => {
           <Route path="/reminders" element={<RemindersPage />} />
         </Route>
 
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/login"
+          element={isAuth ? <Navigate to="/" /> : <LoginPage />}
+        />
+        <Route
+          path="/register"
+          element={isAuth ? <Navigate to="/" /> : <RegisterPage />}
+        />
       </Routes>
     </Suspense>
   );

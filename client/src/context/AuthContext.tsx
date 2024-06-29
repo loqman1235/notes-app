@@ -7,7 +7,7 @@ import { LoginSchemaType, RegisterSchemaType } from "@/validators/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AxiosError } from "axios";
-import { setLocalStorage } from "@/utils/localStorage";
+import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 // import { setLocalStorage, getLocalStorage } from "@/utils/localStorage";
 
 type AuthContextType = {
@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(() => !!getLocalStorage("accessToken"));
   const navigate = useNavigate();
 
   // Register user
@@ -47,8 +47,6 @@ const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
   const loginUser = async (data: LoginSchemaType) => {
     try {
       const response = await loginService(data);
-
-      console.log("STATUS: ", response.status);
 
       if (response.status === 200) {
         const user = response.data?.data?.user;
