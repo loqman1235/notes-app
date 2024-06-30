@@ -1,3 +1,4 @@
+import { clg } from "@/utils/clg";
 import { getLocalStorage, setLocalStorage } from "@/utils/localStorage";
 import axios from "axios";
 
@@ -38,12 +39,13 @@ api.interceptors.response.use(undefined, async (error) => {
 
       return api(originalRequest);
     } catch (error) {
+      clg(error);
       return Promise.reject(error);
     }
   }
 
   if (error.response?.data?.code === "TOKEN_MISSING") {
-    console.log("Token missing");
+    clg("Token is missing", error);
     return Promise.reject(error.response.data.message);
   }
 

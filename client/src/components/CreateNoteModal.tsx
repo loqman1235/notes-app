@@ -14,7 +14,7 @@ import useCreateNoteModalCtx from "@/hooks/useCreateNoteModalCtx";
 const CreateNoteModal = () => {
   const { selectedBgColor, setSelectedBgColor } = useCreateNoteModalCtx();
   const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
+  const [content, setContent] = useState("");
   const [isPinned, setIsPinned] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -39,7 +39,7 @@ const CreateNoteModal = () => {
 
   const handleClose = () => {
     setTitle("");
-    setNote("");
+    setContent("");
     setIsCollapsed(false);
     setIsPinned(false);
     setShowChangeBgModal(false);
@@ -55,10 +55,14 @@ const CreateNoteModal = () => {
   // Create note
   useEffect(() => {
     const saveNote = () => {
-      console.log(title, note, isPinned, selectedBgColor);
+      if (title || content) {
+        // TODO: create note
+        console.log(title, content, isPinned, selectedBgColor);
+      }
+
       setIsCollapsed(false);
       setTitle("");
-      setNote("");
+      setContent("");
       setIsPinned(false);
       setShowChangeBgModal(false);
       setSelectedBgColor("var(--background-color)");
@@ -79,7 +83,7 @@ const CreateNoteModal = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isPinned, note, selectedBgColor, setSelectedBgColor, title]);
+  }, [isPinned, content, selectedBgColor, setSelectedBgColor, title]);
 
   return (
     // Create Note Modal Container
@@ -134,8 +138,8 @@ const CreateNoteModal = () => {
             onClick={() => setIsCollapsed(true)}
             onKeyDown={() => setIsCollapsed(true)}
             onInput={adjustTextareaHeight}
-            onChange={(e) => setNote(e.target.value)}
-            value={note}
+            onChange={(e) => setContent(e.target.value)}
+            value={content}
           ></textarea>
         </div>
 
