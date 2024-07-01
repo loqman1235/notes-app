@@ -25,9 +25,17 @@ const createNote = async (
     },
   });
 
-  console.log(note, "note created | services/note");
-
   return note;
 };
 
-export { createNote };
+const getNotes = async (userId: string) => {
+  const notes = await prisma.note.findMany({
+    where: {
+      userId,
+    },
+  });
+
+  return notes;
+};
+
+export { createNote, getNotes };

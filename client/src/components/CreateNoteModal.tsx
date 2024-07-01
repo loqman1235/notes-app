@@ -106,7 +106,7 @@ const CreateNoteModal = () => {
     // Create Note Modal Container
     <div
       ref={containerRef}
-      className={`mb-5 w-full rounded-md border border-border p-4 shadow-md shadow-black/30 md:w-[500px]`}
+      className={`mb-10 w-full rounded-md border border-border p-4 shadow-md shadow-black/30 md:w-[500px]`}
       style={{
         backgroundColor: selectedBgColor,
         borderColor:
