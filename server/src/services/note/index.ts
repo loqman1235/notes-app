@@ -7,20 +7,25 @@ interface CreateNoteParams {
   isPinned?: boolean;
 }
 
-const createNote = async ({
-  title,
-  content,
-  bgColor,
-  isPinned,
-}: CreateNoteParams) => {
+const createNote = async (
+  userId: string,
+  { title, content, bgColor, isPinned }: CreateNoteParams
+) => {
   const note = await prisma.note.create({
     data: {
       title,
       content,
       bgColor,
       isPinned,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
     },
   });
+
+  console.log(note, "note created | services/note");
 
   return note;
 };

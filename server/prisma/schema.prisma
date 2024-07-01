@@ -17,8 +17,9 @@ model User {
   password      String
   refresh_token RefreshToken?
   notes         Note[]
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
 
 model RefreshToken {
@@ -34,11 +35,12 @@ model Note {
   id         String   @id @default(cuid())
   title      String
   content    String
-  bgColor    String
+  bgColor    String?
   isPinned   Boolean  @default(false)
   isArchived Boolean  @default(false)
   isDeleted  Boolean  @default(false)
-  user       User     @relation(fields: [id], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

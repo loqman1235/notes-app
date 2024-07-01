@@ -2,16 +2,18 @@ import {
   MdOutlineArchive,
   MdOutlineNotificationAdd,
   MdOutlinePalette,
-  MdOutlinePushPin,
-  MdPushPin,
 } from "react-icons/md";
-import ToolTip from "./shared/ToolTip";
 import IconButton from "./shared/IconButton";
 import { useEffect, useRef, useState } from "react";
 import ChangeNoteBackgroundModal from "./ChangeNoteBackgroundModal";
 import useCreateNoteModalCtx from "@/hooks/useCreateNoteModalCtx";
+import useNote from "@/hooks/useNote";
+import { clg } from "@/utils/clg";
+import PinnButton from "./shared/PinnButton";
 
 const CreateNoteModal = () => {
+  const { createNote } = useNote();
+
   const { selectedBgColor, setSelectedBgColor } = useCreateNoteModalCtx();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -54,18 +56,26 @@ const CreateNoteModal = () => {
 
   // Create note
   useEffect(() => {
-    const saveNote = () => {
-      if (title || content) {
-        // TODO: create note
-        console.log(title, content, isPinned, selectedBgColor);
-      }
+    const saveNote = async () => {
+      try {
+        if (title || content) {
+          await createNote({
+            title,
+            content,
+            bgColor: selectedBgColor,
+            isPinned,
+          });
+        }
 
-      setIsCollapsed(false);
-      setTitle("");
-      setContent("");
-      setIsPinned(false);
-      setShowChangeBgModal(false);
-      setSelectedBgColor("var(--background-color)");
+        setIsCollapsed(false);
+        setTitle("");
+        setContent("");
+        setIsPinned(false);
+        setShowChangeBgModal(false);
+        setSelectedBgColor("var(--background-color)");
+      } catch (error) {
+        clg(error);
+      }
     };
 
     const handleClickOutside = (e: MouseEvent) => {
@@ -83,13 +93,20 @@ const CreateNoteModal = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isPinned, content, selectedBgColor, setSelectedBgColor, title]);
+  }, [
+    isPinned,
+    content,
+    selectedBgColor,
+    setSelectedBgColor,
+    title,
+    createNote,
+  ]);
 
   return (
     // Create Note Modal Container
     <div
       ref={containerRef}
-      className={`w-full rounded-md border border-border p-4 shadow-md shadow-black/30 md:w-[500px]`}
+      className={`mb-5 w-full rounded-md border border-border p-4 shadow-md shadow-black/30 md:w-[500px]`}
       style={{
         backgroundColor: selectedBgColor,
         borderColor:
@@ -112,19 +129,7 @@ const CreateNoteModal = () => {
             onChange={(e) => setTitle(e.target.value)}
             value={title}
           />
-          <div className="group relative">
-            <button
-              onClick={toggleIsPinned}
-              type="button"
-              className={`flex items-center justify-center rounded-full p-2 text-xl text-text-light transition duration-300 hover:bg-white/10 hover:text-text-background ${isPinned && "!text-text-background"}`}
-            >
-              {isPinned ? <MdPushPin /> : <MdOutlinePushPin />}
-            </button>
-            <ToolTip
-              text={`${isPinned ? "Unpin note" : "Pin note"}`}
-              position="center"
-            />
-          </div>
+          <PinnButton isPinned={isPinned} onClick={toggleIsPinned} />
         </div>
 
         {/* BODY */}

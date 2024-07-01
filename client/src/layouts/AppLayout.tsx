@@ -1,6 +1,7 @@
 import Main from "@/components/Main";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
+import { NoteContextProvider } from "@/context/NoteContext";
 import { SidebarContextProvider } from "@/context/SidebarContext";
 
 const AppLayout = () => {
@@ -9,7 +10,9 @@ const AppLayout = () => {
       <SidebarContextProvider>
         <Navbar />
         <Sidebar />
-        <Main />
+        <NoteContextProvider>
+          <Main />
+        </NoteContextProvider>
       </SidebarContextProvider>
     </>
   );
