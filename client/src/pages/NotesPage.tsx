@@ -7,10 +7,10 @@ const NotesPage = () => {
   const { notes } = useNote();
 
   return (
-    <div className="flex h-full w-full flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       <CreateNoteModalContextProvider>
         <CreateNoteModal />
-        <div className="w-full max-w-5xl gap-5 pb-20 md:columns-4">
+        <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg w-full max-w-5xl pb-20">
           {notes.map((note) => (
             <NoteCard key={note.id} {...note} />
           ))}

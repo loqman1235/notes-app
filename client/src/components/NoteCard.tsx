@@ -4,7 +4,7 @@ import PinnButton from "./shared/PinnButton";
 const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
   return (
     <div
-      className="mb-5 rounded-md border p-4 hover:shadow-lg"
+      className="mb-5 inline-block w-full break-inside-avoid rounded-md border p-4 hover:shadow-lg"
       style={{
         backgroundColor: bgColor,
         borderColor:
