@@ -10,7 +10,7 @@ const NotesPage = () => {
     <div className="flex h-full w-full flex-col items-center">
       <CreateNoteModalContextProvider>
         <CreateNoteModal />
-        <div className="grid w-full grid-cols-1 gap-5 md:grid-cols-3">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-5 md:grid-cols-3">
           {notes.map((note) => (
             <NoteCard key={note.id} {...note} />
           ))}
