@@ -33,6 +33,9 @@ const getNotes = async (userId: string) => {
     where: {
       userId,
     },
+    orderBy: {
+      created_at: "desc",
+    },
   });
 
   return notes;
