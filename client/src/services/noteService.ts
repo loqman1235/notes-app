@@ -17,4 +17,10 @@ const createNote = async ({
   return response;
 };
 
-export { createNote };
+const getNotes = async () => {
+  const response = await api.get("/notes");
+
+  return response;
+};
+
+export { createNote, getNotes };

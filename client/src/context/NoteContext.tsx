@@ -1,7 +1,10 @@
-import { createNote as createNoteService } from "@/services/noteService";
+import {
+  createNote as createNoteService,
+  getNotes as getNotesService,
+} from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 type NoteContextType = {
   notes: NoteType[];
@@ -44,6 +47,22 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
       clg(error);
     }
   };
+
+  useEffect(() => {
+    const getNotes = async () => {
+      try {
+        const response = await getNotesService();
+
+        if (response.status === 200) {
+          setNotes(response.data.data.notes);
+        }
+      } catch (error) {
+        clg(error);
+      }
+    };
+
+    getNotes();
+  }, []);
 
   return (
     <NoteContext.Provider value={{ notes, createNote }}>
