@@ -1,20 +1,17 @@
-import {
-  MdGridView,
-  MdLightMode,
-  MdLogout,
-  MdMenu,
-  MdSearch,
-} from "react-icons/md";
+import { MdGridView, MdLogout, MdMenu, MdSearch } from "react-icons/md";
 import ToolTip from "./shared/ToolTip";
 import Brand from "./shared/Brand";
 import useSidebar from "@/hooks/useSidebar";
 import { useEffect, useRef } from "react";
 import useAuth from "@/hooks/useAuth";
+import useTheme from "@/hooks/useTheme";
+import ThemeToggleBtn from "./shared/ThemeToggleBtn";
 
 const navbarBtnStyles =
   "flex items-center justify-center rounded-full p-2 text-2xl text-text-light transition duration-300 hover:bg-foreground-light hover:text-text-background";
 
 const Navbar = () => {
+  const { theme, toggleTheme } = useTheme();
   const { logoutUser } = useAuth();
   const { toggleSidebar } = useSidebar();
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -34,6 +31,8 @@ const Navbar = () => {
 
     return () => window.removeEventListener("scroll", handleNavbarScroll);
   }, []);
+
+  console.log(theme, "Current theme");
 
   return (
     <>
@@ -69,12 +68,10 @@ const Navbar = () => {
 
         {/* CTAS*/}
         <div className="flex items-center gap-2">
-          <div className="group relative">
-            <button className={navbarBtnStyles}>
-              <MdLightMode />
-              <ToolTip text="Light Mode" position="center" />
-            </button>
-          </div>
+          <ThemeToggleBtn
+            className={navbarBtnStyles}
+            toggleTheme={toggleTheme}
+          />
           <div className="group relative">
             <button className={navbarBtnStyles}>
               <MdGridView />
