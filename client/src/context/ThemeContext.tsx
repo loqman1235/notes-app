@@ -1,3 +1,4 @@
+import { getLocalStorage } from "@/utils/localStorage";
 import { createContext, useState } from "react";
 
 type Theme = "light" | "dark";
@@ -13,7 +14,14 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState("light");
+  const storedTheme =
+    (getLocalStorage("theme") as Theme | null) ??
+    (window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ? "dark"
+      : "light";
+
+  const [theme, setTheme] = useState(storedTheme);
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
