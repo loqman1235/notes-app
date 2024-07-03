@@ -11,7 +11,7 @@ const navbarBtnStyles =
   "flex items-center justify-center rounded-full p-2 text-2xl text-text-light transition duration-300 hover:bg-foreground-light hover:text-text-background";
 
 const Navbar = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
   const { logoutUser } = useAuth();
   const { toggleSidebar } = useSidebar();
   const navbarRef = useRef<HTMLDivElement>(null);
@@ -31,8 +31,6 @@ const Navbar = () => {
 
     return () => window.removeEventListener("scroll", handleNavbarScroll);
   }, []);
-
-  console.log(theme, "Current theme");
 
   return (
     <>
