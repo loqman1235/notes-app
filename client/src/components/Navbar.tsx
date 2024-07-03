@@ -36,7 +36,7 @@ const Navbar = () => {
     <>
       <div
         ref={navbarRef}
-        className="fixed top-0 z-50 flex h-[var(--navbar-height)] w-full items-center justify-between gap-10 bg-foreground px-2 md:px-5"
+        className="fixed top-0 z-50 flex h-[var(--navbar-height)] w-full items-center justify-between gap-10 border-b border-border bg-foreground px-2 md:px-5"
       >
         <div className="flex items-center gap-2">
           <div className="group relative">

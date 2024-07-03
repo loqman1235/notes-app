@@ -26,6 +26,26 @@
   --sidebar-width: 300px;
 }
 
+.dark-mode {
+  --background-color: #1c1c1c;
+  --foreground-color: #262626;
+  --foreground-light-color: #303030;
+  --text-background-color: #fff;
+  --text-muted-color: #6f6f6f;
+  --text-light-color: #9e9e9e;
+  --border-color: #4e4e4e;
+}
+
+.light-mode {
+  --background-color: #fff;
+  --foreground-color: #fff;
+  --foreground-light-color: #f1f3f4;
+  --text-background-color: #1c1c1c;
+  --text-muted-color: #6f6f6f;
+  --text-light-color: #9e9e9e;
+  --border-color: #dcdcdc;
+}
+
 @layer base {
   body {
     @apply bg-background font-montserrat text-text-background;
