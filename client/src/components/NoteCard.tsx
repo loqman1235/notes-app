@@ -1,10 +1,16 @@
 import { NoteType as NoteCardProps } from "@/types";
 import PinnButton from "./shared/PinnButton";
+import useTheme from "@/hooks/useTheme";
 
 const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
+  const { theme } = useTheme();
+
+  const noteCardTextColor =
+    theme === "light" && bgColor !== "var(--background-color)" && "text-white";
+
   return (
     <div
-      className="mb-5 inline-block h-fit w-full break-inside-avoid rounded-md border p-4 transition-transform duration-300 hover:scale-105 hover:shadow-xl"
+      className={`mb-5 inline-block h-fit w-full break-inside-avoid rounded-md border p-4 transition-transform duration-300 hover:scale-105 hover:shadow-xl ${noteCardTextColor}`}
       style={{
         backgroundColor: bgColor,
         borderColor:
