@@ -11,7 +11,7 @@ const PinnButton = ({ isPinned, ...props }: PinnButtonProps) => {
     <div className="group relative">
       <button
         type="button"
-        className={`flex items-center justify-center rounded-full p-2 text-xl text-text-light transition duration-300 hover:bg-white/10 hover:text-text-background ${isPinned && "!text-text-background"}`}
+        className={`flex items-center justify-center rounded-full p-2 text-xl text-text-light transition duration-300 hover:bg-black/10 hover:text-text-background ${isPinned && "!text-text-background"}`}
         {...props}
       >
         {isPinned ? <MdPushPin /> : <MdOutlinePushPin />}

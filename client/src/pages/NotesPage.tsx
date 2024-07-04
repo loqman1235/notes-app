@@ -14,7 +14,7 @@ const NotesPage = () => {
       <CreateNoteModalContextProvider>
         <CreateNoteModal />
         {pinnedNotes.length > 0 && (
-          <div className="max-w-5xl">
+          <div className="w-full max-w-5xl">
             <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
               Pinned
             </h3>
@@ -27,7 +27,7 @@ const NotesPage = () => {
         )}
 
         {otherNotes.length > 0 && (
-          <div className="max-w-5xl">
+          <div className="w-full max-w-5xl">
             <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
               Other
             </h3>
