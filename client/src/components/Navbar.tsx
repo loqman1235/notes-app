@@ -70,7 +70,7 @@ const Navbar = () => {
             className={navbarBtnStyles}
             toggleTheme={toggleTheme}
           />
-          <div className="group relative">
+          <div className="group relative hidden sm:block md:block">
             <button className={navbarBtnStyles}>
               <MdGridView />
             </button>
