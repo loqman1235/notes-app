@@ -14,12 +14,7 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const storedTheme =
-    (getLocalStorage("theme") as Theme | null) ??
-    (window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ? "dark"
-      : "light";
+  const storedTheme = (getLocalStorage("theme") as Theme | null) ?? "dark";
 
   const [theme, setTheme] = useState<Theme>(storedTheme);
 
@@ -28,8 +23,6 @@ const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
     setTheme(nextTheme);
     setLocalStorage("theme", nextTheme);
   };
-
-  console.log(theme, "CURRENT THEME");
 
   useEffect(() => {
     document.body.classList.remove(
