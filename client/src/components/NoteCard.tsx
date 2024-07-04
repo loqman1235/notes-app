@@ -23,7 +23,14 @@ const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
       )}
 
       {/* CONTENT */}
-      <p className="text-sm">{shortenText(content)}</p>
+      {!title ? (
+        <div className="flex items-center justify-between">
+          <p className="text-sm">{shortenText(content)}</p>
+          <PinnButton isPinned={isPinned || false} />
+        </div>
+      ) : (
+        <p className="text-sm">{shortenText(content)}</p>
+      )}
     </div>
   );
 };
