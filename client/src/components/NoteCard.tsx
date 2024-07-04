@@ -1,5 +1,6 @@
 import { NoteType as NoteCardProps } from "@/types";
 import PinnButton from "./shared/PinnButton";
+import shortenText from "@/utils/shortenText";
 
 const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
   return (
@@ -22,7 +23,7 @@ const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
       )}
 
       {/* CONTENT */}
-      <p className="text-sm">{content}</p>
+      <p className="text-sm">{shortenText(content)}</p>
     </div>
   );
 };
