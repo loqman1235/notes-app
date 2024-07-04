@@ -13,27 +13,31 @@ const NotesPage = () => {
     <div className="flex w-full flex-col items-center">
       <CreateNoteModalContextProvider>
         <CreateNoteModal />
-        <div className="max-w-5xl">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
-            Pinned
-          </h3>
-          <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg w-full pb-20">
-            {pinnedNotes.map((note) => (
-              <NoteCard key={note.id} {...note} />
-            ))}
+        {pinnedNotes.length > 0 && (
+          <div className="max-w-5xl">
+            <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
+              Pinned
+            </h3>
+            <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg w-full pb-20">
+              {pinnedNotes.map((note) => (
+                <NoteCard key={note.id} {...note} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="max-w-5xl">
-          <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
-            Other
-          </h3>
-          <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg w-full pb-20">
-            {otherNotes.map((note) => (
-              <NoteCard key={note.id} {...note} />
-            ))}
+        {otherNotes.length > 0 && (
+          <div className="max-w-5xl">
+            <h3 className="mb-2 text-xs font-semibold uppercase text-text-light">
+              Other
+            </h3>
+            <div className="masonry sm:masonry-sm md:masonry-md lg:masonry-lg w-full pb-20">
+              {otherNotes.map((note) => (
+                <NoteCard key={note.id} {...note} />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </CreateNoteModalContextProvider>
     </div>
   );

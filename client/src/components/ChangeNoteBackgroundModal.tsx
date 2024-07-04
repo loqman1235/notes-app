@@ -5,47 +5,47 @@ import { useEffect, useRef } from "react";
 
 const bgColors = [
   {
-    hex: "#77172E",
+    hex: "var(--coral-color)",
     name: "Coral",
   },
   {
-    hex: "#692B17",
+    hex: "var(--peach-color)",
     name: "Peach",
   },
   {
-    hex: "#7C4A03",
+    hex: "var(--sand-color)",
     name: "Sand",
   },
   {
-    hex: "#264D3B",
+    hex: "var(--mint-color)",
     name: "Mint",
   },
   {
-    hex: "#0C625D",
+    hex: "var(--sage-color)",
     name: "Sage",
   },
   {
-    hex: "#256377",
+    hex: "var(--fog-color)",
     name: "Fog",
   },
   {
-    hex: "#284255",
+    hex: "var(--storm-color)",
     name: "Storm",
   },
   {
-    hex: "#472E5B",
+    hex: "var(--dusk-color)",
     name: "Dusk",
   },
   {
-    hex: "#6C394F",
+    hex: "var(--blossom-color)",
     name: "Blossom",
   },
   {
-    hex: "#4B443A",
+    hex: "var(--clay-color)",
     name: "Clay",
   },
   {
-    hex: "#232427",
+    hex: "var(--chalk-color)",
     name: "Chalk",
   },
 ];

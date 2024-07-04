@@ -34,6 +34,18 @@
   --text-muted-color: #6f6f6f;
   --text-light-color: #9e9e9e;
   --border-color: #4e4e4e;
+
+  --coral-color: #77172e;
+  --peach-color: #692b17;
+  --sand-color: #7c4a03;
+  --mint-color: #264d3b;
+  --sage-color: #0c625d;
+  --fog-color: #256377;
+  --storm-color: #284255;
+  --dusk-color: #472e5b;
+  --blossom-color: #6c394f;
+  --clay-color: #4b443a;
+  --chalk-color: #232427;
 }
 
 .light-mode {
@@ -44,6 +56,18 @@
   --text-muted-color: #6f6f6f;
   --text-light-color: #626262;
   --border-color: #dcdcdc;
+
+  --coral-color: #faafa8;
+  --peach-color: #f39f76;
+  --sand-color: #fff8b8;
+  --mint-color: #e2f6d3;
+  --sage-color: #b4ddd3;
+  --fog-color: #d4e4ed;
+  --storm-color: #aeccdc;
+  --dusk-color: #d3bfdb;
+  --blossom-color: #f6e2dd;
+  --clay-color: #e9e3d4;
+  --chalk-color: #efeff1;
 }
 
 @layer base {
