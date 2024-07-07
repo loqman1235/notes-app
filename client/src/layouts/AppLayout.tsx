@@ -3,16 +3,19 @@ import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import { NoteContextProvider } from "@/context/NoteContext";
 import { SidebarContextProvider } from "@/context/SidebarContext";
+import { ViewModeContextProvider } from "@/context/ViewModeContext";
 
 const AppLayout = () => {
   return (
     <>
       <SidebarContextProvider>
-        <Navbar />
-        <Sidebar />
-        <NoteContextProvider>
-          <Main />
-        </NoteContextProvider>
+        <ViewModeContextProvider>
+          <Navbar />
+          <Sidebar />
+          <NoteContextProvider>
+            <Main />
+          </NoteContextProvider>
+        </ViewModeContextProvider>
       </SidebarContextProvider>
     </>
   );

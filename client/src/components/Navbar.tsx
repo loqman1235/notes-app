@@ -1,4 +1,4 @@
-import { MdGridView, MdLogout, MdMenu, MdSearch } from "react-icons/md";
+import { MdLogout, MdMenu, MdSearch } from "react-icons/md";
 import ToolTip from "./shared/ToolTip";
 import Brand from "./shared/Brand";
 import useSidebar from "@/hooks/useSidebar";
@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import useAuth from "@/hooks/useAuth";
 import useTheme from "@/hooks/useTheme";
 import ThemeToggleBtn from "./shared/ThemeToggleBtn";
+import ViewModeBtn from "./shared/ViewModeBtn";
 
 const navbarBtnStyles =
   "flex items-center justify-center rounded-full p-2 text-2xl text-text-light transition duration-300 hover:bg-foreground-light hover:text-text-background";
@@ -70,12 +71,7 @@ const Navbar = () => {
             className={navbarBtnStyles}
             toggleTheme={toggleTheme}
           />
-          <div className="group relative hidden sm:block md:block">
-            <button className={navbarBtnStyles}>
-              <MdGridView />
-            </button>
-            <ToolTip text="Grid View" position="center" />
-          </div>
+          <ViewModeBtn />
           <div className="group relative">
             <button
               className={navbarBtnStyles}

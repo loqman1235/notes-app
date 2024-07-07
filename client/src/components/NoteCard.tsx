@@ -16,7 +16,7 @@ const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
     >
       {/* TITLE */}
       {title && (
-        <div className="mb-3 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <h2 className="font-semibold">{shortenText(title, 80)}</h2>
           <PinnButton isPinned={isPinned || false} />
         </div>
