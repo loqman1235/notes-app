@@ -10,8 +10,10 @@ import useCreateNoteModalCtx from "@/hooks/useCreateNoteModalCtx";
 import useNote from "@/hooks/useNote";
 import { clg } from "@/utils/clg";
 import PinnButton from "./shared/PinnButton";
+import useTheme from "@/hooks/useTheme";
 
 const CreateNoteModal = () => {
+  const { theme } = useTheme();
   const { createNote } = useNote();
 
   const { selectedBgColor, setSelectedBgColor } = useCreateNoteModalCtx();
@@ -175,7 +177,7 @@ const CreateNoteModal = () => {
             <button
               onClick={handleClose}
               type="button"
-              className="rounded-md px-4 py-2 text-sm font-semibold transition duration-300 hover:bg-white/10"
+              className={`rounded-md px-4 py-2 text-sm font-semibold transition duration-300 ${theme === "light" ? "hover:bg-black/10" : "hover:bg-white/10"}`}
             >
               Close
             </button>
