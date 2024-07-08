@@ -35,7 +35,7 @@ const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeContext.Provider
       value={{
-        theme: "light",
+        theme,
         toggleTheme,
       }}
     >
