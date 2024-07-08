@@ -1,4 +1,4 @@
-import { MdGridView, MdViewStream } from "react-icons/md";
+import { MdGridView, MdViewList } from "react-icons/md";
 import ToolTip from "./ToolTip";
 import useViewMode from "@/hooks/useViewMode";
 
@@ -11,16 +11,16 @@ const ViewModeBtn = () => {
   return defaultViewMode === "grid" ? (
     <div className="group relative hidden sm:block md:block">
       <button className={btnStyles} onClick={toggleViewMode}>
-        <MdGridView />
+        <MdViewList />
       </button>
-      <ToolTip text="Grid View" position="center" />
+      <ToolTip text="List View" position="center" />
     </div>
   ) : (
     <div className="group relative hidden sm:block md:block">
       <button className={btnStyles} onClick={toggleViewMode}>
-        <MdViewStream />
+        <MdGridView />
       </button>
-      <ToolTip text="List View" position="center" />
+      <ToolTip text="Grid View" position="center" />
     </div>
   );
 };
