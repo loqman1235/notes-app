@@ -13,7 +13,7 @@ const IconButton = ({ icon, text, ...props }: IconButtonProps) => {
   console.log(theme, "theme");
 
   const hoverBgClass =
-    theme === "light" ? "hover:bg-black/10" : "hover:bg-white/50";
+    theme === "light" ? "hover:bg-black/10" : "hover:bg-white/10";
 
   return (
     <div className="group relative">
