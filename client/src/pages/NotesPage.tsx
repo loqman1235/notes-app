@@ -1,5 +1,5 @@
 import CreateNoteModal from "@/components/CreateNoteModal";
-import NoteCard from "@/components/NoteCard";
+import { NoteCard } from "@/components/NoteCard";
 import { CreateNoteModalContextProvider } from "@/context/CreateNoteModalContext";
 import useNote from "@/hooks/useNote";
 import useViewMode from "@/hooks/useViewMode";
