@@ -10,8 +10,6 @@ interface IconButtonProps
 const IconButton = ({ icon, text, ...props }: IconButtonProps) => {
   const { theme } = useTheme();
 
-  console.log(theme, "theme");
-
   const hoverBgClass =
     theme === "light" ? "hover:bg-black/10" : "hover:bg-white/10";
 

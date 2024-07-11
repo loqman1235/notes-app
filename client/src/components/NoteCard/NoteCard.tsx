@@ -2,8 +2,10 @@ import { NoteType as NoteCardProps } from "@/types";
 import PinnButton from "../shared/PinnButton";
 import shortenText from "@/utils/shortenText";
 import NoteCardFooter from "./NoteCardFooter";
+import useNote from "@/hooks/useNote";
 
-const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
+const NoteCard = ({ id, title, content, bgColor, isPinned }: NoteCardProps) => {
+  const { togglePinNote } = useNote();
   return (
     <div
       className={`group/card mb-5 inline-block h-fit w-full break-inside-avoid rounded-md border transition-transform duration-300 hover:scale-105 hover:shadow-xl`}
@@ -20,7 +22,10 @@ const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
         <div className="flex items-center justify-between p-4 !pb-0">
           <h2 className="font-semibold">{shortenText(title, 80)}</h2>
           <div className="opacity-0 transition duration-300 group-hover/card:opacity-100">
-            <PinnButton isPinned={isPinned || false} />
+            <PinnButton
+              isPinned={isPinned || false}
+              onClick={() => togglePinNote(id, !isPinned)}
+            />
           </div>
         </div>
       )}
@@ -30,7 +35,10 @@ const NoteCard = ({ title, content, bgColor, isPinned }: NoteCardProps) => {
         <div className="flex items-center justify-between p-4">
           <p className="text-sm">{shortenText(content)}</p>
           <div className="opacity-0 transition duration-300 group-hover/card:opacity-100">
-            <PinnButton isPinned={isPinned || false} />
+            <PinnButton
+              isPinned={isPinned || false}
+              onClick={() => togglePinNote(id, !isPinned)}
+            />
           </div>
         </div>
       ) : (

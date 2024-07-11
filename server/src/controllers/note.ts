@@ -2,7 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import {
   createNote as createNoteService,
   getNotes as getNotesService,
+  deleteNote as deleteNoteService,
+  togglePinNote as togglePinNoteService,
 } from "../services/note";
+
 import sendResponse from "../utils/response";
 import { HTTP_STATUS } from "../constants";
 import { CustomRequest } from "../types/express";
@@ -61,4 +64,47 @@ const getNotes = async (
   }
 };
 
-export { createNote, getNotes };
+const deleteNote = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { noteId } = req.params;
+  const { userId } = req;
+  if (!userId) {
+    throw new Error("User not found");
+  }
+
+  try {
+    await deleteNoteService(userId, noteId);
+
+    sendResponse(res, HTTP_STATUS.OK, "Note successfully deleted");
+  } catch (error) {
+    next(error);
+  }
+};
+
+const togglePin = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { noteId } = req.params;
+  const { userId } = req;
+  const { isPinned } = req.body;
+  if (!userId) {
+    throw new Error("User not found");
+  }
+
+  try {
+    const note = await togglePinNoteService(userId, noteId, isPinned);
+
+    sendResponse(res, HTTP_STATUS.OK, "Note successfully pinned", {
+      note,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createNote, getNotes, deleteNote, togglePin };

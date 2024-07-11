@@ -1,6 +1,7 @@
 import {
   createNote as createNoteService,
   getNotes as getNotesService,
+  togglePinNote as togglePinNoteService,
 } from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
@@ -14,11 +15,13 @@ type NoteContextType = {
     bgColor,
     isPinned,
   }: createNoteType) => Promise<void>;
+  togglePinNote: (noteId: string, isPinned: boolean) => Promise<void>;
 };
 
 const NoteContext = createContext<NoteContextType>({
   notes: [],
   createNote: async () => {},
+  togglePinNote: async () => {},
 });
 
 const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -48,6 +51,27 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  // Pin note
+
+  const togglePinNote = async (noteId: string, isPinned: boolean) => {
+    try {
+      const response = await togglePinNoteService(noteId, isPinned);
+
+      if (response.status === 200) {
+        const newNotes = notes.map((note) => {
+          if (note.id === noteId) {
+            return response.data.data.note;
+          }
+
+          return note;
+        });
+        setNotes(newNotes);
+      }
+    } catch (error) {
+      clg(error);
+    }
+  };
+
   useEffect(() => {
     const getNotes = async () => {
       try {
@@ -65,7 +89,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <NoteContext.Provider value={{ notes, createNote }}>
+    <NoteContext.Provider value={{ notes, createNote, togglePinNote }}>
       {children}
     </NoteContext.Provider>
   );

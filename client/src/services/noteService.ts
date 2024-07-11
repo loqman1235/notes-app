@@ -23,4 +23,12 @@ const getNotes = async () => {
   return response;
 };
 
-export { createNote, getNotes };
+const togglePinNote = async (noteId: string, isPinned: boolean) => {
+  const response = await api.put(`/notes/${noteId}/togglePin`, {
+    isPinned,
+  });
+
+  return response;
+};
+
+export { createNote, getNotes, togglePinNote };
