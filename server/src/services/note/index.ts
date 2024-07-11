@@ -41,15 +41,6 @@ const getNotes = async (userId: string) => {
   return notes;
 };
 
-const deleteNote = async (userId: string, noteId: string) => {
-  await prisma.note.delete({
-    where: {
-      id: noteId,
-      userId,
-    },
-  });
-};
-
 const togglePinNote = async (
   userId: string,
   noteId: string,
@@ -62,6 +53,17 @@ const togglePinNote = async (
     },
     data: {
       isPinned,
+    },
+  });
+
+  return note;
+};
+
+const deleteNote = async (userId: string, noteId: string) => {
+  const note = await prisma.note.delete({
+    where: {
+      id: noteId,
+      userId,
     },
   });
 

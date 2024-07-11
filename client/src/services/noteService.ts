@@ -31,4 +31,9 @@ const togglePinNote = async (noteId: string, isPinned: boolean) => {
   return response;
 };
 
-export { createNote, getNotes, togglePinNote };
+const deleteNote = async (noteId: string) => {
+  const response = await api.delete(`/notes/${noteId}`);
+  return response;
+};
+
+export { createNote, getNotes, togglePinNote, deleteNote };

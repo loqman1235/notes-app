@@ -1,3 +1,4 @@
+import useNote from "@/hooks/useNote";
 import IconButton from "../shared/IconButton";
 import {
   MdDelete,
@@ -6,7 +7,9 @@ import {
   MdOutlinePalette,
 } from "react-icons/md";
 
-const NoteCardFooter = () => {
+const NoteCardFooter = ({ noteId }: { noteId: string }) => {
+  const { deleteNote } = useNote();
+
   return (
     <div className="flex items-center gap-2 px-1 pb-1 text-sm opacity-0 transition duration-300 group-hover/card:opacity-100">
       <IconButton icon={<MdOutlineNotificationAdd />} text="Remind me" />
@@ -16,7 +19,11 @@ const NoteCardFooter = () => {
         id="changeBgModal"
       />
       <IconButton icon={<MdOutlineArchive />} text="Archive" />
-      <IconButton icon={<MdDelete />} text="Delete" />
+      <IconButton
+        icon={<MdDelete />}
+        text="Delete"
+        onClick={() => deleteNote(noteId)}
+      />
     </div>
   );
 };

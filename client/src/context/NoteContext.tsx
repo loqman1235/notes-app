@@ -2,6 +2,7 @@ import {
   createNote as createNoteService,
   getNotes as getNotesService,
   togglePinNote as togglePinNoteService,
+  deleteNote as deleteNoteService,
 } from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
@@ -16,12 +17,14 @@ type NoteContextType = {
     isPinned,
   }: createNoteType) => Promise<void>;
   togglePinNote: (noteId: string, isPinned: boolean) => Promise<void>;
+  deleteNote: (noteId: string) => Promise<void>;
 };
 
 const NoteContext = createContext<NoteContextType>({
   notes: [],
   createNote: async () => {},
   togglePinNote: async () => {},
+  deleteNote: async () => {},
 });
 
 const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -52,7 +55,6 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Pin note
-
   const togglePinNote = async (noteId: string, isPinned: boolean) => {
     try {
       const response = await togglePinNoteService(noteId, isPinned);
@@ -65,6 +67,20 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
 
           return note;
         });
+        setNotes(newNotes);
+      }
+    } catch (error) {
+      clg(error);
+    }
+  };
+
+  // Delete note
+  const deleteNote = async (noteId: string) => {
+    try {
+      const response = await deleteNoteService(noteId);
+
+      if (response.status === 200) {
+        const newNotes = notes.filter((note) => note.id !== noteId);
         setNotes(newNotes);
       }
     } catch (error) {
@@ -89,7 +105,9 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <NoteContext.Provider value={{ notes, createNote, togglePinNote }}>
+    <NoteContext.Provider
+      value={{ notes, createNote, togglePinNote, deleteNote }}
+    >
       {children}
     </NoteContext.Provider>
   );

@@ -76,9 +76,13 @@ const deleteNote = async (
   }
 
   try {
-    await deleteNoteService(userId, noteId);
+    const note = await deleteNoteService(userId, noteId);
 
-    sendResponse(res, HTTP_STATUS.OK, "Note successfully deleted");
+    sendResponse(res, HTTP_STATUS.OK, "Note successfully deleted", {
+      note,
+    });
+
+    return;
   } catch (error) {
     next(error);
   }

@@ -45,7 +45,7 @@ const NoteCard = ({ id, title, content, bgColor, isPinned }: NoteCardProps) => {
         <p className="p-4 text-sm">{shortenText(content)}</p>
       )}
 
-      <NoteCardFooter />
+      <NoteCardFooter noteId={id} />
     </div>
   );
 };
