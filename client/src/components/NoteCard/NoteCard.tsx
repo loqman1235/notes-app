@@ -26,8 +26,10 @@ const NoteCard = ({
     >
       {/* TITLE */}
       {title && (
-        <div className="flex items-center justify-between p-4 !pb-0">
-          <h2 className="font-semibold">{shortenText(title, 80)}</h2>
+        <div className="flex w-full items-center justify-between p-4 !pb-0">
+          <h2 className="w-full break-words font-semibold">
+            {shortenText(title, 80)}
+          </h2>
           <div className="opacity-0 transition duration-300 group-hover/card:opacity-100">
             {!isDeleted && (
               <PinnButton
