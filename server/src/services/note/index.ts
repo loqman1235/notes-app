@@ -32,6 +32,7 @@ const getNotes = async (userId: string) => {
   const notes = await prisma.note.findMany({
     where: {
       userId,
+      isDeleted: false,
     },
     orderBy: {
       created_at: "desc",
@@ -59,6 +60,15 @@ const togglePinNote = async (
   return note;
 };
 
+const moveNoteToTrash = async (noteId: string, userId: string) => {
+  const note = await prisma.note.update({
+    where: { id: noteId, userId },
+    data: { isDeleted: true },
+  });
+
+  return note;
+};
+
 const deleteNote = async (userId: string, noteId: string) => {
   const note = await prisma.note.delete({
     where: {
@@ -70,4 +80,4 @@ const deleteNote = async (userId: string, noteId: string) => {
   return note;
 };
 
-export { createNote, getNotes, deleteNote, togglePinNote };
+export { createNote, getNotes, deleteNote, togglePinNote, moveNoteToTrash };

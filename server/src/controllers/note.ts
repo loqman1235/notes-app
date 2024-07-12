@@ -4,6 +4,7 @@ import {
   getNotes as getNotesService,
   deleteNote as deleteNoteService,
   togglePinNote as togglePinNoteService,
+  moveNoteToTrash as moveNoteToTrashService,
 } from "../services/note";
 
 import sendResponse from "../utils/response";
@@ -111,4 +112,27 @@ const togglePin = async (
   }
 };
 
-export { createNote, getNotes, deleteNote, togglePin };
+const moveNoteToTrash = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = req;
+  const { noteId } = req.params;
+
+  if (!userId) {
+    throw new NotFoundException("User not found");
+  }
+
+  try {
+    const note = await moveNoteToTrashService(noteId, userId);
+
+    sendResponse(res, HTTP_STATUS.OK, "Note moved to trash", {
+      note,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createNote, getNotes, deleteNote, togglePin, moveNoteToTrash };

@@ -24,16 +24,16 @@ const getNotes = async () => {
 };
 
 const togglePinNote = async (noteId: string, isPinned: boolean) => {
-  const response = await api.put(`/notes/${noteId}/togglePin`, {
+  const response = await api.patch(`/notes/${noteId}/togglePin`, {
     isPinned,
   });
 
   return response;
 };
 
-const deleteNote = async (noteId: string) => {
-  const response = await api.delete(`/notes/${noteId}`);
+const moveNoteToTrash = async (noteId: string) => {
+  const response = await api.patch(`/notes/${noteId}/move-to-trash`);
   return response;
 };
 
-export { createNote, getNotes, togglePinNote, deleteNote };
+export { createNote, getNotes, togglePinNote, moveNoteToTrash };

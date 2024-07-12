@@ -2,7 +2,7 @@ import {
   createNote as createNoteService,
   getNotes as getNotesService,
   togglePinNote as togglePinNoteService,
-  deleteNote as deleteNoteService,
+  moveNoteToTrash as moveNoteToTrashService,
 } from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
@@ -77,7 +77,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
   // Delete note
   const deleteNote = async (noteId: string) => {
     try {
-      const response = await deleteNoteService(noteId);
+      const response = await moveNoteToTrashService(noteId);
 
       if (response.status === 200) {
         const newNotes = notes.filter((note) => note.id !== noteId);
