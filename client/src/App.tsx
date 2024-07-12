@@ -6,6 +6,7 @@ import useAuth from "./hooks/useAuth";
 import { LoginPage, RegisterPage } from "@/pages/Auth";
 import { lazy, Suspense } from "react";
 import LoadingScreen from "@/components/shared/LoadingScreen";
+import TrashPage from "@/pages/TrashPage";
 
 const AppLayout = lazy(() => import("@/layouts/AppLayout"));
 
@@ -21,6 +22,7 @@ const App = () => {
         >
           <Route index element={<NotesPage />} />
           <Route path="/reminders" element={<RemindersPage />} />
+          <Route path="/trash" element={<TrashPage />} />
         </Route>
 
         <Route

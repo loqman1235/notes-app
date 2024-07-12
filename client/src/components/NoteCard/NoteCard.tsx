@@ -4,7 +4,14 @@ import shortenText from "@/utils/shortenText";
 import NoteCardFooter from "./NoteCardFooter";
 import useNote from "@/hooks/useNote";
 
-const NoteCard = ({ id, title, content, bgColor, isPinned }: NoteCardProps) => {
+const NoteCard = ({
+  id,
+  title,
+  content,
+  bgColor,
+  isPinned,
+  isDeleted,
+}: NoteCardProps) => {
   const { togglePinNote } = useNote();
   return (
     <div
@@ -22,10 +29,12 @@ const NoteCard = ({ id, title, content, bgColor, isPinned }: NoteCardProps) => {
         <div className="flex items-center justify-between p-4 !pb-0">
           <h2 className="font-semibold">{shortenText(title, 80)}</h2>
           <div className="opacity-0 transition duration-300 group-hover/card:opacity-100">
-            <PinnButton
-              isPinned={isPinned || false}
-              onClick={() => togglePinNote(id, !isPinned)}
-            />
+            {!isDeleted && (
+              <PinnButton
+                isPinned={isPinned || false}
+                onClick={() => togglePinNote(id, !isPinned)}
+              />
+            )}
           </div>
         </div>
       )}
@@ -35,17 +44,19 @@ const NoteCard = ({ id, title, content, bgColor, isPinned }: NoteCardProps) => {
         <div className="flex items-center justify-between p-4">
           <p className="text-sm">{shortenText(content)}</p>
           <div className="opacity-0 transition duration-300 group-hover/card:opacity-100">
-            <PinnButton
-              isPinned={isPinned || false}
-              onClick={() => togglePinNote(id, !isPinned)}
-            />
+            {!isDeleted && (
+              <PinnButton
+                isPinned={isPinned || false}
+                onClick={() => togglePinNote(id, !isPinned)}
+              />
+            )}
           </div>
         </div>
       ) : (
         <p className="p-4 text-sm">{shortenText(content)}</p>
       )}
 
-      <NoteCardFooter noteId={id} />
+      <NoteCardFooter noteId={id} isTrashed={isDeleted || false} />
     </div>
   );
 };

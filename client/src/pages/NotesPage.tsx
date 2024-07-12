@@ -8,8 +8,8 @@ const NotesPage = () => {
   const { notes } = useNote();
   const { defaultViewMode } = useViewMode();
 
-  const pinnedNotes = notes.filter((note) => note.isPinned);
-  const otherNotes = notes.filter((note) => !note.isPinned);
+  const pinnedNotes = notes.filter((note) => note.isPinned && !note.isDeleted);
+  const otherNotes = notes.filter((note) => !note.isPinned && !note.isDeleted);
 
   return (
     <div className="flex w-full flex-col items-center">

@@ -102,7 +102,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     getNotes();
-  }, []);
+  }, [notes]);
 
   return (
     <NoteContext.Provider

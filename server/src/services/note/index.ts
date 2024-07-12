@@ -32,7 +32,6 @@ const getNotes = async (userId: string) => {
   const notes = await prisma.note.findMany({
     where: {
       userId,
-      isDeleted: false,
     },
     orderBy: {
       created_at: "desc",

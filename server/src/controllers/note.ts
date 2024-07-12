@@ -46,9 +46,6 @@ const getNotes = async (
   next: NextFunction
 ) => {
   const { userId } = req;
-  const { isTrashed } = req.query;
-
-  console.log("Is trash query:", isTrashed);
 
   if (!userId) {
     throw new Error("User not found");

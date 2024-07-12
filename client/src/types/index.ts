@@ -12,6 +12,7 @@ export type NoteType = {
   bgColor: string;
   isPinned?: boolean;
   isArchived?: boolean;
+  isDeleted?: boolean;
   createdAt: string;
   updatedAt: string;
 };
