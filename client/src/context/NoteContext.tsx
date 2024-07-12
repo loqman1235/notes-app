@@ -3,6 +3,7 @@ import {
   getNotes as getNotesService,
   togglePinNote as togglePinNoteService,
   moveNoteToTrash as moveNoteToTrashService,
+  deleteNoteForever as deleteNoteForeverService,
 } from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
@@ -17,6 +18,7 @@ type NoteContextType = {
     isPinned,
   }: createNoteType) => Promise<void>;
   togglePinNote: (noteId: string, isPinned: boolean) => Promise<void>;
+  moveNoteToTrash: (noteId: string) => Promise<void>;
   deleteNote: (noteId: string) => Promise<void>;
 };
 
@@ -24,6 +26,7 @@ const NoteContext = createContext<NoteContextType>({
   notes: [],
   createNote: async () => {},
   togglePinNote: async () => {},
+  moveNoteToTrash: async () => {},
   deleteNote: async () => {},
 });
 
@@ -74,10 +77,24 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Delete note
-  const deleteNote = async (noteId: string) => {
+  // Move to trash
+  const moveNoteToTrash = async (noteId: string) => {
     try {
       const response = await moveNoteToTrashService(noteId);
+
+      if (response.status === 200) {
+        const newNotes = notes.filter((note) => note.id !== noteId);
+        setNotes(newNotes);
+      }
+    } catch (error) {
+      clg(error);
+    }
+  };
+
+  // Delee forever
+  const deleteNote = async (noteId: string) => {
+    try {
+      const response = await deleteNoteForeverService(noteId);
 
       if (response.status === 200) {
         const newNotes = notes.filter((note) => note.id !== noteId);
@@ -106,7 +123,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NoteContext.Provider
-      value={{ notes, createNote, togglePinNote, deleteNote }}
+      value={{ notes, createNote, togglePinNote, moveNoteToTrash, deleteNote }}
     >
       {children}
     </NoteContext.Provider>

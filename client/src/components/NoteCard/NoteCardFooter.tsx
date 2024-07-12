@@ -16,7 +16,7 @@ const NoteCardFooter = ({
   noteId: string;
   isTrashed: boolean;
 }) => {
-  const { deleteNote } = useNote();
+  const { moveNoteToTrash, deleteNote } = useNote();
 
   return (
     <div className="flex items-center gap-2 px-1 pb-1 text-sm opacity-0 transition duration-300 group-hover/card:opacity-100">
@@ -32,12 +32,16 @@ const NoteCardFooter = ({
           <IconButton
             icon={<MdDelete />}
             text="Delete"
-            onClick={() => deleteNote(noteId)}
+            onClick={() => moveNoteToTrash(noteId)}
           />
         </>
       ) : (
         <>
-          <IconButton icon={<MdDeleteForever />} text="Delete forever" />
+          <IconButton
+            icon={<MdDeleteForever />}
+            text="Delete forever"
+            onClick={() => deleteNote(noteId)}
+          />
           <IconButton icon={<MdRestoreFromTrash />} text="Restore" />
         </>
       )}

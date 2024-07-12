@@ -35,4 +35,15 @@ const moveNoteToTrash = async (noteId: string) => {
   return response;
 };
 
-export { createNote, getNotes, togglePinNote, moveNoteToTrash };
+const deleteNoteForever = async (noteId: string) => {
+  const response = await api.delete(`/notes/${noteId}`);
+  return response;
+};
+
+export {
+  createNote,
+  getNotes,
+  togglePinNote,
+  moveNoteToTrash,
+  deleteNoteForever,
+};
