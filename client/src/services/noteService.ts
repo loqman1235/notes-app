@@ -17,12 +17,11 @@ const createNote = async ({
   return response;
 };
 
-const getNotes = async () => {
-  const response = await api.get("/notes");
+const getNotes = async ({ isTrashed }: { isTrashed?: boolean } = {}) => {
+  const response = await api.get(`/notes?${isTrashed ? "isTrashed=true" : ""}`);
 
   return response;
 };
-
 const togglePinNote = async (noteId: string, isPinned: boolean) => {
   const response = await api.patch(`/notes/${noteId}/togglePin`, {
     isPinned,
