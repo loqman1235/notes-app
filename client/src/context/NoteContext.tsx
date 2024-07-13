@@ -4,6 +4,7 @@ import {
   togglePinNote as togglePinNoteService,
   moveNoteToTrash as moveNoteToTrashService,
   deleteNoteForever as deleteNoteForeverService,
+  restoreNote as restoreNoteService,
 } from "@/services/noteService";
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
@@ -20,6 +21,7 @@ type NoteContextType = {
   togglePinNote: (noteId: string, isPinned: boolean) => Promise<void>;
   moveNoteToTrash: (noteId: string) => Promise<void>;
   deleteNote: (noteId: string) => Promise<void>;
+  restoreNote: (noteId: string) => Promise<void>;
 };
 
 const NoteContext = createContext<NoteContextType>({
@@ -28,6 +30,7 @@ const NoteContext = createContext<NoteContextType>({
   togglePinNote: async () => {},
   moveNoteToTrash: async () => {},
   deleteNote: async () => {},
+  restoreNote: async () => {},
 });
 
 const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -91,13 +94,34 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Delee forever
+  // Delete forever
   const deleteNote = async (noteId: string) => {
     try {
       const response = await deleteNoteForeverService(noteId);
 
       if (response.status === 200) {
         const newNotes = notes.filter((note) => note.id !== noteId);
+        setNotes(newNotes);
+      }
+    } catch (error) {
+      clg(error);
+    }
+  };
+
+  // Restore note
+  const restoreNote = async (noteId: string) => {
+    try {
+      const response = await restoreNoteService(noteId);
+
+      if (response.status === 200) {
+        const newNotes = notes.map((note) => {
+          if (note.id === noteId) {
+            return { ...note, isDeleted: false };
+          }
+
+          return note;
+        });
+
         setNotes(newNotes);
       }
     } catch (error) {
@@ -123,7 +147,14 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <NoteContext.Provider
-      value={{ notes, createNote, togglePinNote, moveNoteToTrash, deleteNote }}
+      value={{
+        notes,
+        createNote,
+        togglePinNote,
+        moveNoteToTrash,
+        deleteNote,
+        restoreNote,
+      }}
     >
       {children}
     </NoteContext.Provider>

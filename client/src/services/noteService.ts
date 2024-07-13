@@ -40,10 +40,16 @@ const deleteNoteForever = async (noteId: string) => {
   return response;
 };
 
+const restoreNote = async (noteId: string) => {
+  const response = await api.patch(`/notes/${noteId}/restore`);
+  return response;
+};
+
 export {
   createNote,
   getNotes,
   togglePinNote,
   moveNoteToTrash,
   deleteNoteForever,
+  restoreNote,
 };
