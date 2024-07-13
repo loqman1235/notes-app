@@ -9,6 +9,7 @@ import {
 import { NoteType, createNoteType } from "@/types";
 import { clg } from "@/utils/clg";
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type NoteContextType = {
   notes: NoteType[];
@@ -102,6 +103,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
       if (response.status === 200) {
         const newNotes = notes.filter((note) => note.id !== noteId);
         setNotes(newNotes);
+        toast.success(response.data.message);
       }
     } catch (error) {
       clg(error);
@@ -123,6 +125,7 @@ const NoteContextProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         setNotes(newNotes);
+        toast.success(response.data.message);
       }
     } catch (error) {
       clg(error);

@@ -86,7 +86,7 @@ const deleteNote = async (
   try {
     const note = await deleteNoteService(userId, noteId);
 
-    sendResponse(res, HTTP_STATUS.OK, "Note successfully deleted", {
+    sendResponse(res, HTTP_STATUS.OK, "Note has been permanently deleted", {
       note,
     });
 
