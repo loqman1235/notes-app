@@ -5,12 +5,13 @@ import {
   deleteNote as deleteNoteService,
   togglePinNote as togglePinNoteService,
   moveNoteToTrash as moveNoteToTrashService,
+  restoreNote as restoreNoteService,
 } from "../services/note";
 
 import sendResponse from "../utils/response";
 import { HTTP_STATUS } from "../constants";
 import { CustomRequest } from "../types/express";
-import { NotFoundException } from "../exceptions";
+import { BadRequestException, NotFoundException } from "../exceptions";
 
 const createNote = async (
   req: CustomRequest,
@@ -21,7 +22,7 @@ const createNote = async (
   const { userId } = req;
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new BadRequestException("User ID is missing");
   }
 
   try {
@@ -48,7 +49,7 @@ const getNotes = async (
   const { userId } = req;
 
   if (!userId) {
-    throw new Error("User not found");
+    throw new BadRequestException("User ID is missing");
   }
 
   try {
@@ -73,8 +74,13 @@ const deleteNote = async (
 ) => {
   const { noteId } = req.params;
   const { userId } = req;
+
   if (!userId) {
     throw new Error("User not found");
+  }
+
+  if (!noteId) {
+    throw new BadRequestException("Note ID is missing");
   }
 
   try {
@@ -98,8 +104,13 @@ const togglePin = async (
   const { noteId } = req.params;
   const { userId } = req;
   const { isPinned } = req.body;
+
   if (!userId) {
-    throw new Error("User not found");
+    throw new BadRequestException("User ID is missing");
+  }
+
+  if (!noteId) {
+    throw new BadRequestException("Note ID is missing");
   }
 
   try {
@@ -122,7 +133,11 @@ const moveNoteToTrash = async (
   const { noteId } = req.params;
 
   if (!userId) {
-    throw new NotFoundException("User not found");
+    throw new BadRequestException("User ID is missing");
+  }
+
+  if (!noteId) {
+    throw new BadRequestException("Note ID is missing");
   }
 
   try {
@@ -136,4 +151,35 @@ const moveNoteToTrash = async (
   }
 };
 
-export { createNote, getNotes, deleteNote, togglePin, moveNoteToTrash };
+const restoreNote = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = req;
+  const { noteId } = req.params;
+
+  if (!userId) {
+    throw new BadRequestException("User ID is missing");
+  }
+
+  if (!noteId) {
+    throw new BadRequestException("Note ID is missing");
+  }
+
+  try {
+    const note = await restoreNoteService(userId, noteId);
+    sendResponse(res, HTTP_STATUS.OK, "Note successfully restored", { note });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  createNote,
+  getNotes,
+  deleteNote,
+  togglePin,
+  moveNoteToTrash,
+  restoreNote,
+};

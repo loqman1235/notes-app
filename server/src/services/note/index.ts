@@ -79,4 +79,20 @@ const deleteNote = async (userId: string, noteId: string) => {
   return note;
 };
 
-export { createNote, getNotes, deleteNote, togglePinNote, moveNoteToTrash };
+const restoreNote = async (userId: string, noteId: string) => {
+  const note = await prisma.note.update({
+    where: { id: noteId, userId },
+    data: { isDeleted: false },
+  });
+
+  return note;
+};
+
+export {
+  createNote,
+  getNotes,
+  deleteNote,
+  togglePinNote,
+  moveNoteToTrash,
+  restoreNote,
+};
