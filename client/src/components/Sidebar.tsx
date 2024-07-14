@@ -1,4 +1,5 @@
 import useSidebar from "@/hooks/useSidebar";
+import { useEffect, useRef } from "react";
 import {
   MdOutlineArchive,
   MdOutlineDelete,
@@ -40,10 +41,33 @@ const sidebarItemStyles =
   "flex w-full items-center gap-5 px-5 py-3 transition duration-300 hover:bg-foreground text-text-light";
 
 const Sidebar = () => {
-  const { isSidebarShown } = useSidebar();
+  const { isSidebarShown, closeSidebar } = useSidebar();
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        closeSidebar();
+      }
+    };
+
+    if (isSidebarShown) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [closeSidebar, isSidebarShown]);
 
   return (
     <aside
+      ref={sidebarRef}
       className={`fixed left-0 top-[var(--navbar-height)] flex h-[calc(100vh-var(--navbar-height))] w-[var(--sidebar-width)] flex-col bg-foreground pt-2 shadow-lg transition duration-500 ease-in-out ${!isSidebarShown && "-translate-x-full"} z-40`}
     >
       <ul className="">

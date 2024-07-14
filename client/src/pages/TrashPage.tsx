@@ -10,6 +10,9 @@ const TrashPage = () => {
 
   return (
     <div className="flex w-full flex-col items-center">
+      <h3 className="mb-5 font-medium italic">
+        Notes in Trash are deleted after 7 days.
+      </h3>
       {trashedNotes.length > 0 && (
         <div
           className={`w-full ${defaultViewMode === "grid" ? "max-w-5xl" : "max-w-2xl"}`}
