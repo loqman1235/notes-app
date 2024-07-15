@@ -41,7 +41,11 @@ const Navbar = () => {
       >
         <div className="flex items-center gap-2">
           <div className="group relative">
-            <button className={navbarBtnStyles} onClick={toggleSidebar}>
+            <button
+              id="toggleSidebarBtn"
+              className={navbarBtnStyles}
+              onClick={toggleSidebar}
+            >
               <MdMenu />
             </button>
             <ToolTip text="Main Menu" position="left" />

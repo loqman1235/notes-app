@@ -46,9 +46,12 @@ const Sidebar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click is inside the sidebar or the toggle button
       if (
         sidebarRef.current &&
-        !sidebarRef.current.contains(event.target as Node)
+        !sidebarRef.current.contains(event.target as Node) &&
+        event.target instanceof HTMLElement &&
+        !event.target.closest("#toggleSidebarBtn")
       ) {
         closeSidebar();
       }
@@ -67,6 +70,7 @@ const Sidebar = () => {
 
   return (
     <aside
+      onClick={(e) => e.stopPropagation()}
       ref={sidebarRef}
       className={`fixed left-0 top-[var(--navbar-height)] flex h-[calc(100vh-var(--navbar-height))] w-[var(--sidebar-width)] flex-col bg-foreground pt-2 shadow-lg transition duration-500 ease-in-out ${!isSidebarShown && "-translate-x-full"} z-40`}
     >
